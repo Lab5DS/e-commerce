@@ -2,10 +2,10 @@
 
 /* ── Variables de diseño ─────────────────────────────────────── */
 :root {
-  --primary:   #0f172a;   /* navbar, headings             */
-  --accent:    #6366f1;   /* botones, highlights          */
-  --accent-dk: #4f46e5;   /* hover de botones             */
-  --success:   #10b981;
+  --primary:   #2a0f1f;   /* navbar, headings             */
+  --accent:    #e448a1;   /* botones, highlights          */
+  --accent-dk: #c50063;   /* hover de botones             */
+  --success:   #009866;
   --danger:    #ef4444;
   --text:      #1e293b;
   --muted:     #64748b;
