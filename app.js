@@ -6,7 +6,7 @@ const session      = require('express-session');
 const cookieParser = require('cookie-parser');
 const ejsLayouts   = require('express-ejs-layouts');
 const sequelize    = require('./config/database');
-// const { Product, Order, OrderItem } = require('./models');
+const { Product, Order, OrderItem } = require('./models');
 
 const productRoutes  = require('./routes/products');
 const cartRoutes     = require('./routes/cart');
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 
 app.get('/', (req, res) => {
   res.send(`
-    Hello World - [REEMPLAZAR POR SU NOMBRE]
+    Hello World - Elizabeth Hernández A
     La aplicacion funciona en Render.
     Puerto: ${port} | Entorno: ${process.env.NODE_ENV || 'development'}
   `);
