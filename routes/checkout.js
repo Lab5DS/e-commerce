@@ -11,6 +11,16 @@ res.render('order-success', {
     title: '¡Pedido realizado!', 
     message: 'Gracias por tu compra. Tu pedido ha sido procesado exitosamente.' 
 });
+// routes/checkout.js
+router.get('/success', (req, res) => {
+  const orderId = req.query.orderId;
+  
+  res.render('order-success', {
+    title: '¡Pedido Confirmado!',
+    message: `Tu pedido #${orderId} se ha realizado con éxito.`, // Agrega esta línea
+    orderId: orderId
+  });
+});
 
   
 router.get( '/cancel',              ctrl.handleCancelPayment);
