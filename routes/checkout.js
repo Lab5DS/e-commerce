@@ -6,7 +6,6 @@ router.get( '/',                    ctrl.getCheckoutPage);
 router.post('/process',             ctrl.processCheckout);       // crea orden BD + muestra PayPal
 router.post('/create-paypal-order', ctrl.createPayPalOrder);    // crea orden en PayPal API
 router.post('/capture-paypal-order',ctrl.capturePayPalOrder);   // captura el pago aprobado
-// routes/checkout.js
 
 // RUTA DE ÉXITO
 router.get('/success', (req, res) => {
@@ -26,7 +25,7 @@ router.get('/success', (req, res) => {
 router.get('/cancel', (req, res) => {
   res.render('payment-failed', { 
     title: 'Pago Cancelado', 
-    message: 'El proceso de pago fue interrumpido. No se ha realizado ningún cargo.' 
+    message: 'El pago fue cancelado por el usuario.' 
   });
 });
 
