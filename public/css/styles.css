@@ -49,7 +49,7 @@ a:hover { color: var(--accent-dk); }
 /* ── Hero ────────────────────────────────────────────────────── */
 .hero {
   background:
-    linear-gradient(135deg, rgba(99,102,241,.85) 0%, rgba(15,23,42,.92) 100%),
+    linear-gradient(135deg, rgba(255, 214, 239, 0.85) 0%, rgba(15,23,42,.92) 100%),
     url('/images/banner.jpg') center/cover no-repeat;
   color: #fff;
   padding: 90px 0 80px;
