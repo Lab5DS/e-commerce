@@ -6,22 +6,7 @@ router.get( '/',                    ctrl.getCheckoutPage);
 router.post('/process',             ctrl.processCheckout);       // crea orden BD + muestra PayPal
 router.post('/create-paypal-order', ctrl.createPayPalOrder);    // crea orden en PayPal API
 router.post('/capture-paypal-order',ctrl.capturePayPalOrder);   // captura el pago aprobado
-
-res.render('order-success', { 
-    title: '¡Pedido realizado!', 
-    message: 'Gracias por tu compra. Tu pedido ha sido procesado exitosamente.' 
-});
-// routes/checkout.js
-router.get('/success', (req, res) => {
-  const orderId = req.query.orderId;
-  
-  res.render('order-success', {
-    title: '¡Pedido Confirmado!',
-    message: `Tu pedido #${orderId} se ha realizado con éxito.`, // Agrega esta línea
-    orderId: orderId
-  });
-});
-
-  
+router.get( '/success',             (req, res) => res.render('order-success',
+  { title: 'Pedido Completado', order: { id: req.query.orderId } }));
 router.get( '/cancel',              ctrl.handleCancelPayment);
 module.exports = router;
