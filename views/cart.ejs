@@ -28,9 +28,7 @@
         <tr>
           <td>
             <div class="d-flex align-items-center gap-3">
-              <img src="<%= item.product.imageUrl %>"
-                   style="width:56px;height:56px;object-fit:cover;border-radius:8px"
-                   onerror="this.src='/images/placeholder.jpg'">
+             <img src="/images/<%= product.imageUrl %>" class="card-img-top" alt="<%= product.name %>">
               <div>
                 <div class="fw-semibold"><%= item.product.name %></div>
                 <div class="text-muted small">Unidad: $<%= parseFloat(item.product.price).toFixed(2) %></div>

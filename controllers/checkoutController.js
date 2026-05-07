@@ -52,6 +52,8 @@ const checkoutController = {
       }
       req.session.pendingOrderId = order.id;
       // Renderiza la vista con los botones de PayPal
+          console.log("DEBUG: El ID de PayPal es:", process.env.PAYPAL_CLIENT_ID);
+   
       res.render('payment', {
         title: 'Procesar Pago',
         order,
