@@ -9,10 +9,12 @@ router.post('/capture-paypal-order',ctrl.capturePayPalOrder);   // captura el pa
 router.get('/success', (req, res) => {
     res.render('order-success', { 
         title: 'Pedido Completado', 
-        message: '¡Gracias por tu compra! Tu pedido ha sido procesado.', // <-- Faltaba esto
-        order: { id: req.query.orderId } 
+        message: '¡Gracias por tu compra! Tu pedido ha sido procesado.',
+        order: { 
+            id: req.query.orderId, 
+            total: req.query.total // <--- Agregamos esta línea
+        } 
     });
 });
-
 router.get( '/cancel',              ctrl.handleCancelPayment);
 module.exports = router;
