@@ -52,8 +52,6 @@ const checkoutController = {
       }
       req.session.pendingOrderId = order.id;
       // Renderiza la vista con los botones de PayPal
-          console.log("DEBUG: El ID de PayPal es:", process.env.PAYPAL_CLIENT_ID);
-   
       res.render('payment', {
         title: 'Procesar Pago',
         order,
@@ -87,7 +85,7 @@ const checkoutController = {
       res.status(500).json({ error: 'Error al crear orden PayPal' });
     }
   },
-  // 3. El JS de payment.ejs llama aquí cuando el usuario aprueba en PayPal
+    // 3. El JS de payment.ejs llama aquí cuando el usuario aprueba en PayPal
   capturePayPalOrder: async (req, res) => {
     try {
       const { paypalOrderId, orderId } = req.body;
