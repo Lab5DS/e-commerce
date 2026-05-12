@@ -29,8 +29,8 @@
           <td>
             <div class="d-flex align-items-center gap-3">
               <img src="<%= item.product.imageUrl %>"
-     style="width:56px;height:56px;object-fit:cover;border-radius:8px"
-     onerror="this.src='/images/placeholder.jpg'">
+                   style="width:56px;height:56px;object-fit:cover;border-radius:8px"
+                   onerror="this.src='/images/placeholder.jpg'">
               <div>
                 <div class="fw-semibold"><%= item.product.name %></div>
                 <div class="text-muted small">Unidad: $<%= parseFloat(item.product.price).toFixed(2) %></div>
@@ -46,7 +46,8 @@
                      onchange="this.form.submit()">
             </form>
           </td>
-           <td class="text-center align-middle fw-semibold">
+
+                    <td class="text-center align-middle fw-semibold">
             $<%= (item.product.price * item.quantity).toFixed(2) %>
           </td>
           <td class="text-center align-middle">

@@ -8,7 +8,9 @@
 
 <div class="row g-5 align-items-start">
   <div class="col-md-6">
-    <img src="<%= product.imageUrl %>" class="card-img-top" alt="<%= product.name %>">
+    <img src="<%= product.imageUrl %>" alt="<%= product.name %>"
+         class="product-detail-img"
+         onerror="this.src='/images/placeholder.jpg'">
   </div>
   <div class="col-md-6">
     <h1 class="fw-800 mb-2"><%= product.name %></h1>
