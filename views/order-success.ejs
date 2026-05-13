@@ -10,10 +10,18 @@
     <div class="card-body text-start p-4">
       <div class="row g-2">
         <div class="col-6 text-muted">Orden #</div>
-        <div class="col-6 fw-bold"><%= order.id %></div>
+        <div class="col-6 fw-bold"><%= order && order.id ? order.id : 'N/A' %></div>
         <div class="col-6 text-muted">Total</div>
         <div class="col-6 fw-bold" style="color:var(--accent)">
-          $<%= parseFloat(order.total).toFixed(2) %>
+          <% 
+            // 1. Convertir a string seguro y limpiar signos o comas
+            let totalStr = order && order.total ? String(order.total).replace(/[^0-9.]/g, '') : '0';
+            // 2. Convertir a número decimal
+            let totalNum = parseFloat(totalStr);
+            // 3. Validar si sigue siendo NaN y asignar 0 si es el caso
+            if (isNaN(totalNum)) totalNum = 0;
+          %>
+          $<%= totalNum.toFixed(2) %>
         </div>
         <div class="col-6 text-muted">Estado</div>
         <div class="col-6">
