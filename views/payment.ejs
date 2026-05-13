@@ -6,7 +6,7 @@
       </div>
       <div class="card-body text-center">
         <p class="mb-1"><strong>Total a pagar:</strong>
-          <span class="text-primary h4"> $<%= parseFloat(order.total).toFixed(2) %></span>
+          <span class="text-primary h4">  $<%= parseFloat(order.total).toFixed(2) %></span>
         </p>
         <p class="text-muted small mb-4">Modo Sandbox — sin cargos reales</p>
         <!-- PayPal inyecta los botones aquí -->
@@ -33,7 +33,7 @@
       const data = await res.json();
       return data.id; // ID de la orden PayPal
     },
-    // Paso 2: capturar el pago después de que el usuario aprueba
+       // Paso 2: capturar el pago después de que el usuario aprueba
     onApprove: async (data) => {
       document.getElementById('pay-message').innerHTML =
         '<div class="alert alert-info">Procesando tu pago...</div>';
@@ -43,12 +43,19 @@
       });
       const result = await res.json();
       if (result.success) {
-        window.location.href = '/checkout/success?orderId=' + result.orderId;
+        // Forzamos el uso del total que ya conocemos desde el servidor en la plantilla
+        const totalFijo = '<%= parseFloat(order.total).toFixed(2) %>';
+        window.location.href =
+  '/checkout/success?orderId=' +
+  result.orderId +
+  '&total=' +
+  totalFijo;
       } else {
         document.getElementById('pay-message').innerHTML =
           '<div class="alert alert-danger">El pago no fue completado. Intenta nuevamente.</div>';
       }
     },
+
     onError: (err) => {
       document.getElementById('pay-message').innerHTML =
         '<div class="alert alert-danger">Error en el pago: ' + err + '</div>';

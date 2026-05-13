@@ -1,3 +1,4 @@
+
 // app.js — reemplaza el Hello World
 require('dotenv').config();
 const express      = require('express');
@@ -66,3 +67,5 @@ sequelize.sync()
     console.error('Error al sincronizar BD:', err.message);
     process.exit(1);
   });
+
+  

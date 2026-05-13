@@ -25,7 +25,8 @@ const cartController = {
     } catch (err) {
       res.status(500).render('error', { title:'Error', message:'Error al agregar al carrito' });
     }
-  },updateCartItem: (req, res) => {
+  },
+  updateCartItem: (req, res) => {
     try {
       const productId = parseInt(req.body.productId);
       const quantity  = parseInt(req.body.quantity);
