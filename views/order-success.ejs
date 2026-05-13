@@ -3,6 +3,7 @@
   <div class="success-icon">✓</div>
   <h1 class="fw-800 mb-1">¡Gracias por tu compra!</h1>
   <p class="text-muted mb-4">Tu pedido fue confirmado y está siendo procesado.</p>
+  
   <div class="success-card card">
     <div class="card-header">
       <i class="bi bi-bag-check me-2"></i> Detalles del Pedido
@@ -11,10 +12,12 @@
       <div class="row g-2">
         <div class="col-6 text-muted">Orden #</div>
         <div class="col-6 fw-bold"><%= order.id %></div>
+        
         <div class="col-6 text-muted">Total</div>
         <div class="col-6 fw-bold" style="color:var(--accent)">
-          $<%= parseFloat(order.total).toFixed(2) %>
+           $<%= (Number(order.total) || 0).toFixed(2) %>
         </div>
+        
         <div class="col-6 text-muted">Estado</div>
         <div class="col-6">
           <span class="badge-stock"><i class="bi bi-check2"></i> Pagado</span>
@@ -22,6 +25,7 @@
       </div>
     </div>
   </div>
+  
   <a href="/" class="btn btn-primary mt-4">
     <i class="bi bi-shop me-2"></i>Seguir comprando
   </a>
