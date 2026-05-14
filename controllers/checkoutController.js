@@ -22,6 +22,7 @@ async function getPayPalAccessToken() {
   const data = await res.json();
   return data.access_token;
 }
+
 const checkoutController = {
   getCheckoutPage: (req, res) => {
     if (!req.session.cart || req.session.cart.items.length === 0)
@@ -30,18 +31,33 @@ const checkoutController = {
   },
 
   // 1. Crea la orden en la BD y muestra la página con los botones de PayPal
-  processCheckout: async (req, res) => {
-    try {
-      if (!req.session.cart || req.session.cart.items.length === 0)
-        return res.redirect('/cart');
-      const cart  = req.session.cart;
-      const order = await Order.create({
-        firstName: req.body.firstName, lastName:  req.body.lastName,
-        email:     req.body.email,     address:   req.body.address,
-        city:      req.body.city,      province:  req.body.province,
-        zip:       req.body.zip || '', phone:     req.body.phone,
-        total:     cart.totalPrice,    status:    'pending'
-      });
+ processCheckout: async (req, res) => {
+  try {
+    if (!req.session.cart || req.session.cart.items.length === 0)
+      return res.redirect('/cart');
+
+    const cart = req.session.cart;
+    const totalPrice = cart.items.reduce((sum, item) => {
+    const price = Number(item.product?.price || 0);
+    const qty = Number(item.quantity || 0);
+    return sum + (price * qty);
+  }, 0);
+
+
+    const order = await Order.create({
+      firstName: req.body.firstName,
+      lastName:  req.body.lastName,
+      email:     req.body.email,
+      address:   req.body.address,
+      city:      req.body.city,
+      province:  req.body.province,
+      zip:       req.body.zip || '',
+      phone:     req.body.phone,
+      total:     totalPrice,
+      status:    'pending'
+    });
+
+    
       for (const item of cart.items) {
         await OrderItem.create({
           OrderId:   order.id,
@@ -85,7 +101,8 @@ const checkoutController = {
       res.status(500).json({ error: 'Error al crear orden PayPal' });
     }
   },
-    // 3. El JS de payment.ejs llama aquí cuando el usuario aprueba en PayPal
+
+  // 3. El JS de payment.ejs llama aquí cuando el usuario aprueba en PayPal
   capturePayPalOrder: async (req, res) => {
     try {
       const { paypalOrderId, orderId } = req.body;
@@ -102,9 +119,16 @@ const checkoutController = {
 
       if (captured) {
         await order.update({ status: 'paid', paymentId: paypalOrderId });
-        req.session.cart           = { items: [], totalQty: 0, totalPrice: 0 };
+
+        req.session.cart = { items: [], totalQty: 0, totalPrice: 0 };
         req.session.pendingOrderId = null;
-        res.json({ success: true, orderId: order.id });
+
+        // SE MODIFICÓ ESTA RESPUESTA: Ahora envía success, orderId y total de la base de datos
+        return res.json({ 
+          success: true, 
+          orderId: order.id,
+          total: order.total
+        });
       } else {
         await order.update({ status: 'payment_failed' });
         res.json({ success: false, status: data.status });

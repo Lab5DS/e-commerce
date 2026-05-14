@@ -42,8 +42,10 @@
         body: JSON.stringify({ paypalOrderId: data.orderID, orderId: ORDER_ID })
       });
       const result = await res.json();
+      
       if (result.success) {
-        window.location.href = '/checkout/success?orderId=' + result.orderId;
+        // Redirecciona incluyendo id y total en la URL para la vista de éxito
+        window.location.href = '/checkout/success?orderId=' + result.orderId + '&total=' + result.total;
       } else {
         document.getElementById('pay-message').innerHTML =
           '<div class="alert alert-danger">El pago no fue completado. Intenta nuevamente.</div>';

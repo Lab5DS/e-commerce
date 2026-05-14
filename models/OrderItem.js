@@ -9,7 +9,6 @@ const OrderItem = sequelize.define('OrderItem', {
 
   price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
 
-
   OrderId: {
     type: DataTypes.INTEGER,
     allowNull: false
