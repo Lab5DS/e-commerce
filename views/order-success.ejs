@@ -17,7 +17,8 @@
         <div class="col-6 fw-bold" style="color:var(--accent)">
            $<%= (Number(order.total) || 0).toFixed(2) %>
         </div>
-        
+        <pre class="text-start bg-light p-3 mt-3" style="font-size:0.75rem;"><%= JSON.stringify(order, null, 2) %></pre>
+
         <div class="col-6 text-muted">Estado</div>
         <div class="col-6">
           <span class="badge-stock"><i class="bi bi-check2"></i> Pagado</span>
