@@ -4,6 +4,12 @@ const sequelize     = require('../config/database');
 
 const Order = sequelize.define('Order', {
   id:        { type: DataTypes.INTEGER,        primaryKey: true, autoIncrement: true },
+    // En models/Order.js — AGREGAR:
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: { model: 'users', key: 'id' }
+  },
   firstName: { type: DataTypes.STRING,         allowNull: false },
   lastName:  { type: DataTypes.STRING,         allowNull: false },
   email:     { type: DataTypes.STRING,         allowNull: false },
@@ -13,9 +19,7 @@ const Order = sequelize.define('Order', {
   zip:       { type: DataTypes.STRING },
   phone:     { type: DataTypes.STRING,         allowNull: false },
   total:     { type: DataTypes.DECIMAL(10, 2), allowNull: false },
-  paymentId: { type: DataTypes.STRING },
-  // pending | paid | payment_failed | canceled
-  status:    { type: DataTypes.STRING,         defaultValue: 'pending' }
+  paymentId: { type: DataTypes.STRING }
 });
 
 module.exports = Order;

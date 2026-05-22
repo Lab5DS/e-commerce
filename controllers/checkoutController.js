@@ -54,7 +54,8 @@ const checkoutController = {
       zip:       req.body.zip || '',
       phone:     req.body.phone,
       total:     totalPrice,
-      status:    'pending'
+      status:    'pending',
+      user_id:   req.session.userId || null   // null si el usuario no está autenticado
     });
 
     
@@ -62,6 +63,7 @@ const checkoutController = {
         await OrderItem.create({
           OrderId:   order.id,
           ProductId: item.product.id,
+          store_id:   item.product.store_id || null,
           quantity:  item.quantity,
           price:     item.product.price
         });
