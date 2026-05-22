@@ -15,6 +15,17 @@ const checkoutRoutes = require('./routes/checkout');
 const app  = express();
 const port = process.env.PORT || 3000;
 
+// app.js — AGREGAR (1/4)
+
+// Imports — junto a los require existentes:
+const storeAuthRoutes = require('./routes/storeAuth');
+const { attachLocals } = require('./middleware/authMiddleware');
+// app.js — AGREGAR (2/4)
+
+// Import:
+const userAuthRoutes = require('./routes/userAuth');
+
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.set('layout', 'layout');        // usa views/layout.ejs como plantilla base
@@ -31,6 +42,18 @@ app.use(session({
   cookie: { maxAge: 3600000 }
 }));
 
+
+// Después de app.use(session(...)):
+app.use(attachLocals);
+
+// Las vistas de auth y admin tienen su propio HTML completo con admin.css
+// y NO deben pasar por layout.ejs. Este middleware lo desactiva para esas rutas.
+app.use(['/store/login', '/store/register',
+         '/user/login',  '/user/register',
+         '/store-admin', '/customer'],
+  (req, res, next) => { res.locals.layout = false; next(); }
+);
+
 // Middleware: carrito vacio en sesion si no existe
 app.use((req, res, next) => {
   if (!req.session.cart) {
@@ -39,6 +62,10 @@ app.use((req, res, next) => {
   res.locals.cartItemCount = req.session.cart.totalQty || 0;
   next();
 });
+
+// Rutas — junto a los app.use() existentes:
+app.use('/store', storeAuthRoutes);
+
 /*
 app.get('/', (req, res) => {
   res.send(`
@@ -53,14 +80,21 @@ app.get('/order-success/:id', async (req, res) => {
 
   res.render('order-success', { order });
 });
- app.use('/',         productRoutes);
+app.use('/',         productRoutes);
 app.use('/cart',     cartRoutes);
 app.use('/checkout', checkoutRoutes);
 
 app.use((req, res) => {
-  res.status(404).render('404', { title: 'Pagina no encontrada' });
+  console.error('❌ 404 ERROR - Ruta no encontrada:', req.originalUrl);
+
+  res.status(404).render('404', {
+    title: 'Página no encontrada',
+    url: req.originalUrl
+  });
 });
 
+// Ruta (junto a las demás):
+app.use('/user', userAuthRoutes);
 sequelize.sync()
   .then(() => {
     console.log('Base de datos sincronizada');
