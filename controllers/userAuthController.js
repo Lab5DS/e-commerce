@@ -2,7 +2,7 @@
 const { User } = require('../models');
 
 const showRegister = (req, res) =>
-  res.render('user-auth/register', { layout: false, error: null });
+  res.render('userauth/register', { title: 'Registrarse', error: null }); // ✅ Carpeta corregida y con Layout
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -15,19 +15,19 @@ const register = async (req, res) => {
     const msg = err.name === 'SequelizeUniqueConstraintError'
       ? 'Ya existe una cuenta con ese email.'
       : 'Error al crear la cuenta.';
-    res.render('user-auth/register', { layout: false, error: msg });
+    res.render('userauth/register', { title: 'Registrarse', error: msg }); // ✅ Carpeta corregida
   }
 };
 
 const showLogin = (req, res) =>
-  res.render('user-auth/login', { layout: false, error: null });
+  res.render('userauth/login', { title: 'Iniciar Sesión', error: null }); // ✅ Carpeta corregida y con Layout
 
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ where: { email } });
     if (!user || !(await user.validatePassword(password))) {
-      return res.render('user-auth/login', { layout: false, error: 'Credenciales incorrectas.' });
+      return res.render('userauth/login', { title: 'Iniciar Sesión', error: 'Credenciales incorrectas.' }); // ✅ Carpeta corregida
     }
     req.session.userId = user.id;
     req.session.user   = { id: user.id, name: user.name };
@@ -35,7 +35,7 @@ const login = async (req, res) => {
     delete req.session.returnTo;
     res.redirect(returnTo);
   } catch (err) {
-    res.render('user-auth/login', { layout: false, error: 'Error del servidor.' });
+    res.render('userauth/login', { title: 'Iniciar Sesión', error: 'Error del servidor.' }); // ✅ Carpeta corregida
   }
 };
 

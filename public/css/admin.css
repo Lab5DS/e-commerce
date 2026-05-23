@@ -2,10 +2,10 @@
 /* Comparte las variables de styles.css — impórtalas o repite las necesarias */
 
 :root {
-  --primary:   #0f172a;
-  --accent:    #6366f1;
-  --accent-dk: #4f46e5;
-  --success:   #10b981;
+  --primary:   #2a0f1f;   /* navbar, headings             */
+  --accent:    #e1669f;   /* botones, highlights          */
+  --accent-dk: #8f0148;   /* hover de botones             */
+  --success:   #0b7552;
   --danger:    #ef4444;
   --warning:   #f59e0b;
   --text:      #1e293b;
