@@ -31,8 +31,7 @@ Product.belongsToMany(User, { through: Wishlist, foreignKey: 'product_id', as: '
 Wishlist.belongsTo(Product, { foreignKey: 'product_id', as: 'product' });
 Wishlist.belongsTo(User,    { foreignKey: 'user_id',    as: 'user' });
 
-sequelize.sync({ alter: true })
-  .then(() => console.log('Tablas sincronizadas'))
-  .catch(err => console.error('Error sync:', err));
+sequelize.sync()
+
 
 module.exports = { Product, Order, OrderItem, Store, User, Wishlist };

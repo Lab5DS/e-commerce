@@ -1,9 +1,9 @@
-// controllers/storeAuthController.js
+// controllers/storeAuthController.js  (1/2) — Registro
 const { Store } = require('../models');
 
 // GET /store/register
 const showRegister = (req, res) => {
-  res.render('storeauth/register', { layout: false, error: null });
+  res.render('store-auth/register', { layout: false, error: null });
 };
 
 // POST /store/register
@@ -25,20 +25,20 @@ const register = async (req, res) => {
     // Iniciar sesion automaticamente
     req.session.storeId = store.id;
     req.session.store   = { id: store.id, name: store.name, slug: store.slug };
-    
-    // ✅ CORREGIDO: Redirigir a la URL sin guiones de tu app.js
-    res.redirect('/storeadmin'); 
+    res.redirect('/store-admin/dashboard');
   } catch (err) {
     const msg = err.name === 'SequelizeUniqueConstraintError'
       ? 'Ya existe una tienda con ese email o nombre.'
       : 'Error al crear la tienda.';
-    res.render('storeauth/register', { layout: false, error: msg });
+    res.render('store-auth/register', { layout: false, error: msg });
   }
 };
 
+// controllers/storeAuthController.js  (2/2) — Login y Logout
+
 // GET /store/login
 const showLogin = (req, res) => {
-  res.render('storeauth/login', { layout: false, error: null });
+  res.render('store-auth/login', { layout: false, error: null });
 };
 
 // POST /store/login
@@ -46,25 +46,19 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const store = await Store.findOne({ where: { email } });
-    
-    // ✅ CORREGIDO: Cambiado 'store-auth/login' a 'storeauth/login'
     if (!store || !(await store.validatePassword(password))) {
-      return res.render('storeauth/login', { layout: false, error: 'Credenciales incorrectas.' });
+      return res.render('store-auth/login', { layout: false, error: 'Credenciales incorrectas.' });
     }
     if (store.status !== 'active') {
-      return res.render('storeauth/login', { layout: false, error: 'Esta tienda esta suspendida.' });
+      return res.render('store-auth/login', { layout: false, error: 'Esta tienda esta suspendida.' });
     }
-    
     req.session.storeId = store.id;
     req.session.store   = { id: store.id, name: store.name, slug: store.slug };
-    
-    // ✅ CORREGIDO: Redirigir a la URL sin guiones de tu app.js
-    const returnTo = req.session.returnTo || '/storeadmin';
+    const returnTo = req.session.returnTo || '/store-admin/dashboard';
     delete req.session.returnTo;
     res.redirect(returnTo);
   } catch (err) {
-    // ✅ CORREGIDO: Cambiado 'store-auth/login' a 'storeauth/login'
-    res.render('storeauth/login', { layout: false, error: 'Error del servidor.' });
+    res.render('store-auth/login', { layout: false, error: 'Error del servidor.' });
   }
 };
 

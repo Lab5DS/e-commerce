@@ -4,11 +4,10 @@ const router   = express.Router();
 const ctrl     = require('../controllers/storeAdminController');
 const { requireStoreAuth } = require('../middleware/authMiddleware');
 
-// Todas las rutas requieren sesión de tienda
+// Todas las rutas requieren sesion de tienda
 router.use(requireStoreAuth);
 
-router.get( '/',                      ctrl.dashboard); 
-
+router.get( '/dashboard',             ctrl.dashboard);
 router.get( '/products',              ctrl.listProducts);
 router.get( '/products/new',          ctrl.showNewProduct);
 router.post('/products',              ctrl.createProduct);
