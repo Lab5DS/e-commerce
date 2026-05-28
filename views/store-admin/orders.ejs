@@ -11,7 +11,7 @@
   <main class="admin-content">
     <div class="admin-topbar"><h1>Pedidos</h1></div>
     <div class="admin-card">
-      <% if (orders.length === 0) { %>
+      <% if (!orders || orders.length === 0) { %>
         <div class="admin-card-body text-center py-4">
           <i class="bi bi-receipt" style="font-size:3rem;color:var(--border)"></i>
           <p class="text-muted mt-3">Aún no tienes pedidos.</p>
@@ -24,26 +24,30 @@
           </tr></thead>
           <tbody>
             <% orders.forEach(o => { %>
-            <tr>
-              <td><strong>#<%= o.order.id %></strong></td>
-              <td><%= o.order.firstName %> <%= o.order.lastName %>
-                <div class="text-muted small"><%= o.order.email %></div>
-              </td>
-              <td><%= new Date(o.order.createdAt).toLocaleDateString('es') %></td>
-              <td>
-                <% o.items.forEach(item => { %>
-                  <div class="small"><%= item.product.name %> x<%= item.quantity %></div>
-                <% }) %>
-              </td>
-              <td><strong style="color:var(--accent)">
-                $<%= o.items.reduce((s,i) => s + parseFloat(i.price)*i.quantity, 0).toFixed(2) %>
-              </strong></td>
-              <td>
-                <span class="status-badge status-<%= o.order.status %>">
-                  <%= o.order.status %>
-                </span>
-              </td>
-            </tr>
+              <% if (o && o.order) { %>
+              <tr>
+                <td><strong>#<%= o.order.id %></strong></td>
+                <td><%= o.order.firstName || 'Sin nombre' %> <%= o.order.lastName || '' %>
+                  <div class="text-muted small"><%= o.order.email || '' %></div>
+                </td>
+                <td><%= o.order.createdAt ? new Date(o.order.createdAt).toLocaleDateString('es') : 'N/A' %></td>
+                <td>
+                  <% if (o.items) { %>
+                    <% o.items.forEach(item => { %>
+                      <div class="small"><%= item.product?.name || 'Producto eliminado' %> x<%= item.quantity %></div>
+                    <% }) %>
+                  <% } %>
+                </td>
+                <td><strong style="color:var(--accent)">
+                  $<%= o.items ? o.items.reduce((s,i) => s + parseFloat(i.price || 0)*i.quantity, 0).toFixed(2) : '0.00' %>
+                </strong></td>
+                <td>
+                  <span class="status-badge status-<%= o.order.status || 'unknown' %>">
+                    <%= o.order.status || 'Desconocido' %>
+                  </span>
+                </td>
+              </tr>
+              <% } %>
             <% }) %>
           </tbody>
         </table>

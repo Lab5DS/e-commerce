@@ -41,7 +41,7 @@ const createProduct = async (req, res) => {
   try {
     await Product.create({
       name, description, price, stock: stock || 0,
-      imageUrl: imageUrl || '/images/placeholder.png',
+      imageUrl: imageUrl || '/images/placeholder.jpg',
       store_id: req.session.storeId
     });
     res.redirect('/store-admin/products');
