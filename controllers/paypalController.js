@@ -1,3 +1,31 @@
+// controllers/paypalController.js  (1/2) — Vista y cálculo
+const { Store, OrderItem, Order } = require('../models');
+const { Op } = require('sequelize');
+
+// Helper: calcula el total de ventas pagadas de una tienda
+async function calcTotalSales(storeId) {
+  const items = await OrderItem.findAll({
+    where: { store_id: storeId },
+    include: [{ model: Order, as: 'order',
+      where: { status: { [Op.in]: ['completed', 'paid'] } }
+    }]
+  });
+  return items.reduce((s, i) => s + parseFloat(i.price) * i.quantity, 0);
+}
+
+// GET /store-admin/payout
+const showPayout = async (req, res) => {
+  const storeId   = req.session.storeId;
+  const store     = await Store.findByPk(storeId);
+  const totalSales = await calcTotalSales(storeId);
+
+  res.render('store-admin/payout', { layout: false,
+    store,
+    totalSales: totalSales.toFixed(2),
+    success: null,
+    error:   null
+  });
+};
 // controllers/paypalController.js  (2/2) — Procesar payout
 const { sendPayout } = require('../services/paypalService');
 

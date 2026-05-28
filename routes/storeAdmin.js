@@ -2,6 +2,8 @@
 const express  = require('express');
 const router   = express.Router();
 const ctrl     = require('../controllers/storeAdminController');
+// Agrega al final de routes/storeAdmin.js:
+const paypalCtrl = require('../controllers/paypalController');
 const { requireStoreAuth } = require('../middleware/authMiddleware');
 
 // Todas las rutas requieren sesion de tienda
@@ -17,5 +19,9 @@ router.post('/products/:id/delete',   ctrl.deleteProduct);
 router.get( '/orders',                ctrl.listOrders);
 router.get( '/settings',              ctrl.showSettings);
 router.post('/settings',              ctrl.updateSettings);
+
+
+router.get( '/payout', paypalCtrl.showPayout);
+router.post('/payout', paypalCtrl.processPayout);
 
 module.exports = router;
