@@ -63,8 +63,9 @@ app.use('/store-admin', storeAdminRoutes);
 app.use('/customer',    customerRoutes);
 
 // 404
-app.use((req, res) => {
-  res.status(404).render('404', { title: 'Página no encontrada' });
+app.use((err, req, res, next) => {
+    console.error("EL ERROR REAL ES:", err.message); // Esto imprimirá el fallo verdadero en tu consola
+    res.status(500).send("Ocurrió un error: " + err.message);
 });
 
 sequelize.sync({ alter: true })
